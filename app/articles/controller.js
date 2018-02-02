@@ -1,4 +1,5 @@
 import Articles from './model'
+import ArticlesPolicy from './policy'
 
 const ArticlesController = {
   getAll(req, res) {
@@ -10,24 +11,58 @@ const ArticlesController = {
     res.json({ articles: Articles.findAll(req.params.id) })
   },
 
+  // policy
   create(req, res) {
-    const article = Articles.create(req.body)
+    if(ArticlesPolicy.for('create', req.user)) {
+      const article = Articles.create(req.body)
 
-    res.status(201).json(article)
+      res.status(201).json(article)
+    } else {
+      res
+        .status(401)
+        .json({
+          article: {
+            errors:['Your are not allowed to create the article.']
+          }
+        })
+    }
   },
-
+  
+  // policy
   update(req, res) {
     const id = req.params.id
-    const article = Articles.update(id, req.body)
 
-    res.status(200).json({ article })
+    if(ArticlesPolicy.for('update', req.user, Articles.find(id))) {
+      const article = Articles.update(id, req.body)
+
+      res.status(200).json({ article })
+    } else {
+      res
+        .status(401)
+        .json({
+          article: {
+            errors: ['You are not allowed to update the article.']
+          }
+        })
+    }
   },
-
+ 
+  // policy
   delete(req, res) {
     const id = req.params.id
 
-    Articles.delete(id)
-    res.status(204)
+    if(ArticlesPolicy.for('delete', req.user, Articles.find(id))) {
+      Articles.delete(id)
+      res.status(204)
+    } else {
+      res
+        .status(401)
+        .json({
+          article: {
+            errors: ['Your are not allowed to delete the article.']
+          }
+        })
+    }
   }
 
 }
