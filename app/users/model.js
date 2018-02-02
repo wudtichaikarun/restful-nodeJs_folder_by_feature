@@ -1,5 +1,7 @@
 import Model from '../model' 
 import bcrypt, { hash } from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
 const Users = {
   ...Model,
   key: 'users',
@@ -22,6 +24,10 @@ const Users = {
         return resove(user)
       })
     })
+  },
+
+  genToken(user) {
+    return jwt.sign({ sub: user.id }, 'secret', { expiresIn: '1h' })
   }
 }
 
