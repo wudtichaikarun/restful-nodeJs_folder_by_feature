@@ -1,6 +1,11 @@
 import db from '../db'
+import Finder from './finder'
+import Pagination from './pagination'
 
 const Model = {
+  ...Finder,
+  ...Pagination,
+  
   findAll() {
     return this.collection()
   },
