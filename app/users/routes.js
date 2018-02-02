@@ -1,3 +1,7 @@
+import controller from './controller'
 export function setup(router) {
-  router.get('/', (req, res) => {res.send('Hello world')})
+  router
+    .get('/:id', controller.get)
+    .get('/', controller.getAll)
+    .post('/', controller.create)
 }
