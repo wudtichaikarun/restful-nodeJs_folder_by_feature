@@ -1,6 +1,7 @@
 import Model from '../model' 
 import bcrypt, { hash } from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import config from '../../config'
 
 const Users = {
   ...Model,
@@ -27,8 +28,24 @@ const Users = {
   },
 
   genToken(user) {
-    return jwt.sign({ sub: user.id }, 'secret', { expiresIn: '1h' })
+    return jwt.sign({ sub: user.id }, config.secretKey, { expiresIn: '1h' })
+  },
+
+  findByEmail(email) {
+    return this.collection().find(user => user.email === email)
+  },
+
+  verify(user, password) {
+    return new Promise((resove, reject) => {
+      const hash = user.password
+
+      bcrypt.compare(password, hash, (err, isValid) => {
+        if(err) return reject(err)
+        return resove(isValid)
+      })
+    })
   }
+  
 }
 
 export default Users
