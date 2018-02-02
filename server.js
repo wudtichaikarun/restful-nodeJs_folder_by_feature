@@ -2,6 +2,7 @@ import express from 'express'
 import fs from 'fs'
 import bodyParser from 'body-parser'
 import config from './config'
+import auth from './middlewares/auth'
 
 function setupRoutes(app) {
   const APP_DIR = `${__dirname}/app`
@@ -22,13 +23,9 @@ export function setup() {
   const app = express()
   const PORT = config.port
   
+  app.use(auth)
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
-  
-  // app.get('/', (req, res) => {
-  //   res.send("hello world")
-  // })
-
   setupRoutes(app)
   
   app.listen(PORT, () => 
