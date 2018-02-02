@@ -1,5 +1,5 @@
-//console.log(process.env.SECRET_KEY)
+require('dotenv').config()
 export default {
   port: process.env.PORT || 8080,
-  secretKey: 'romantic'
+  secretKey: process.env.SECRET_KEY
 }
