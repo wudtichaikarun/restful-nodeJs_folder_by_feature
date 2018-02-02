@@ -14,10 +14,13 @@ const UsersController = {
   },
 
   create(req, res) {
-    const user = UserSerializer.for('create',Users.create({ email: req.body.email}))
-    res.json({
-      user
-    })
+    const { email, password } = req.body
+
+    Users.create(email, password).then(
+      user => res.status(201).json({
+        user //UserSerializer.for('create', user)
+      })
+    )
   }
 }
 
