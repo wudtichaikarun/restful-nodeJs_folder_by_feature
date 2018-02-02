@@ -1,6 +1,7 @@
 import express from 'express'
 import fs from 'fs'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 import config from './config'
 import auth from './middlewares/auth'
 
@@ -26,6 +27,7 @@ export function setup() {
   app.use(auth)
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
+  app.use(cors())
   setupRoutes(app)
   
   app.listen(PORT, () => 
