@@ -6,7 +6,7 @@ const ArticlesController = {
     const { page, perPage, categoryId } = req.query
     const articles = Articles.paginate({ categoryId }, page, perPage)
 
-    res.json({ articles })
+    res.json(articles)
   },
 
   get(req, res) {
