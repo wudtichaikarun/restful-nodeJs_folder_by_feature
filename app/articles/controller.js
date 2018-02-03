@@ -10,7 +10,7 @@ const ArticlesController = {
   },
 
   get(req, res) {
-    res.json({ articles: Articles.findAll(req.params.id) })
+    res.json({ article: Articles.find(req.params.id) })
   },
 
   // policy
